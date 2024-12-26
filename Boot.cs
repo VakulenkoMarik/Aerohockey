@@ -1,1 +1,1 @@
-﻿
+﻿new Game().Start();
