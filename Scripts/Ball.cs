@@ -1,3 +1,4 @@
+using System.Numerics;
 using SFML.Graphics;
 using SFML.System;
 
@@ -19,12 +20,14 @@ public class Ball
     public Vector2f Direction { get; private set; }
 
     private bool isCanMove;
+    private float XSpeed = 0.3f;
+    private float YSpeed = 0.5f;
 
     public void StartMovement()
     {
         isCanMove = true;
 
-        Direction = new Vector2f(0.5f, 1f);
+        Direction = new Vector2f(XSpeed, YSpeed);
     }
 
     public void Move()
@@ -68,19 +71,24 @@ public class Ball
         return (float)(random.Next(5, 11)) / 10f;
     }
 
-    public void DetectingFrameCollisions(Vector2u windowSize)
+    public void DetectingBordersCollision(Vector2u vector2)
+    {
+        CalculatePointCollision(vector2);
+    }
+
+    public void CalculatePointCollision(Vector2u vector2)
     {
         float top = Shape.Position.Y - Shape.Radius;
         float bottom = Shape.Position.Y + Shape.Radius;
         float left = Shape.Position.X - Shape.Radius;
         float right = Shape.Position.X + Shape.Radius;
 
-        if (bottom > windowSize.Y || top < 0)
+        if (bottom > vector2.Y || top < 0)
         {
             ReverseDirectionY();
         }
 
-        if (right > windowSize.X || left < 0)
+        if (right > vector2.X || left < 0)
         {
             ReverseDirectionX();
         }

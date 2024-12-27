@@ -5,9 +5,9 @@ using SFML.Window;
 public class Game
 {
     private RenderWindow window = new RenderWindow(new VideoMode(1600, 900), "Game window");
-    private Color backgoundColor = Color.Green;
 
-    private Ball ball;
+    private GamePLayer gamePlayer1;
+    private GamePLayer gamePlayer2;
 
     public void Start()
     {
@@ -18,68 +18,29 @@ public class Game
 
     private void Init()
     {
+        SetPlayers();
+
         window.Closed += WindowClosed;
-        window.KeyPressed += StartBallMovementKey;
-
-        ball = new Ball(50f, Color.Blue);
-
-        BallToTheStart();
     }
 
-    private void BallToTheStart()
+    private void SetPlayers()
     {
-        float middleOfScreenByX = window.Size.X / 2;
-        float middleOfScreenByY = window.Size.Y / 2;
-
-        Vector2f position = new Vector2f(middleOfScreenByX, middleOfScreenByY);
-
-        ball.DropIntoPosition(position);
+        gamePlayer1 = new GamePLayer(Keyboard.Key.S, Keyboard.Key.W);
+        gamePlayer2 = new GamePLayer(Keyboard.Key.Down, Keyboard.Key.Up);
     }
 
     private void GameCycle()
     {
         while (window.IsOpen)
         {
-            window.DispatchEvents();
-
-            window.Clear(backgoundColor);
-
-            Logic();
-
-            DrawObjects();
-            
-            window.Display();
+            Round round = new Round();
+            round.Start(gamePlayer1, gamePlayer2, window);
         }
-    }
-
-    private void Logic()
-    {
-        BallMovementProcessing();
-    }
-
-    private void BallMovementProcessing()
-    {
-        ball.Move();
-
-        ball.DetectingFrameCollisions(window.Size);
-    }
-
-    private void DrawObjects()
-    {
-        window.Draw(ball.Shape);
     }
 
     private void WindowClosed(object sender, EventArgs e)
     {
         RenderWindow w = (RenderWindow)sender;
         w.Close();
-    }
-
-    private void StartBallMovementKey(object sender, SFML.Window.KeyEventArgs e)
-    {
-        if (e.Code == Keyboard.Key.Space)
-        {
-            ball.StartMovement();
-        }
     }
 }
