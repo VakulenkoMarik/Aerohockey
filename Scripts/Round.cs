@@ -41,16 +41,11 @@ public class Round
 
     private void ScoreCustomisation(string text)
     {
-        score.Font = Configurations.openSans;
+        score = Configurations.mainText;
         score.DisplayedString = text;
 
-        score.Scale = new Vector2f(2f, 2f);
         score.Origin = new Vector2f(score.GetLocalBounds().Width / 2f, score.GetLocalBounds().Height / 2f);
         score.Position = new Vector2f(window.Size.X / 2f, 40f);
-
-        score.FillColor = Color.White;
-        score.OutlineColor = Color.Black;
-        score.OutlineThickness = 1f;
     }
 
     private void SetPlayers(GamePLayer gamePlayer1, GamePLayer gamePlayer2)
