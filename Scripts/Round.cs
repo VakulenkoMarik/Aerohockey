@@ -12,6 +12,8 @@ public class Round
     private Player player2;
     private Text score = new();
 
+    private Sprite background = new();
+
     public Player? Winer { get; private set; }
     
     private float distanceFromTheGoal = 100;
@@ -30,13 +32,33 @@ public class Round
         window.KeyPressed += OnKeyPressed;
         window.Closed += WindowClosed;
 
+        BackgroundCustomisation();
         ScoreCustomisation(text);
 
         ball = new Ball(50f, Color.Blue);
+        BallToTheStart();
 
         SetPlayers(p1, p2);
+    }
 
-        BallToTheStart();
+    private void BackgroundCustomisation()
+    {
+        background.Texture = new Texture(Configurations.BackgroundPath);
+
+        background.Scale = new Vector2f(
+            (float)window.Size.X / background.Texture.Size.X,
+            (float)window.Size.Y / background.Texture.Size.Y
+        );
+
+        background.Origin = new Vector2f(
+            background.Texture.Size.X / 2f,
+            background.Texture.Size.Y / 2f
+        );
+
+        background.Position = new Vector2f(
+            window.Size.X / 2f,
+            window.Size.Y / 2f
+        );
     }
 
     private void ScoreCustomisation(string text)
@@ -120,6 +142,7 @@ public class Round
 
     private void DrawObjects()
     {
+        window.Draw(background);
         window.Draw(ball.Shape);
 
         RectangleShape racket1 = player1.RacketShape;

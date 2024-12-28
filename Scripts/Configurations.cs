@@ -4,6 +4,7 @@ using SFML.System;
 public static class Configurations
 {
     public static Font openSans = new Font("Fonts\\OpenSans-VariableFont_wdth,wght.ttf");
+    public const string BackgroundPath = "Textures\\Football.jpg";
 
     public static Text mainText = new Text()
     {

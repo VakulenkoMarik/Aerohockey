@@ -4,7 +4,7 @@ using SFML.Window;
 
 public class Game
 {
-    private RenderWindow window = new RenderWindow(new VideoMode(1600, 900), "Game window");
+    private RenderWindow window = new RenderWindow(new VideoMode(1600, 1000), "Game window");
 
     private StringBuilder scoreText = new StringBuilder("0 / 0");
 
