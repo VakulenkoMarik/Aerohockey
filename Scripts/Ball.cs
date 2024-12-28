@@ -2,6 +2,13 @@ using System.Numerics;
 using SFML.Graphics;
 using SFML.System;
 
+public enum CollisionType
+{
+    Vertical,
+    Horizontal,
+    None,
+}
+
 public class Ball
 {
     public Ball(float radius, Color fillColor)
@@ -74,6 +81,50 @@ public class Ball
     public void DetectingBordersCollision(Vector2u vector2)
     {
         CalculatePointCollision(vector2);
+    }
+
+    public void CollisionProcessing(RectangleShape target)
+    {
+        switch (CheckCollision(target))
+        {
+            case CollisionType.Horizontal:
+                ReverseDirectionX();
+                break;
+
+            case CollisionType.Vertical:
+                ReverseDirectionX();
+                ReverseDirectionY();
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private CollisionType CheckCollision(RectangleShape rectangle)
+    {
+        FloatRect rectangleRect = rectangle.GetGlobalBounds();
+
+        float closestX = Math.Clamp(Shape.Position.X, rectangleRect.Left, rectangleRect.Left + rectangleRect.Width);
+        float closestY = Math.Clamp(Shape.Position.Y, rectangleRect.Top, rectangleRect.Top + rectangleRect.Height);
+
+        float distanceX = Shape.Position.X - closestX;
+        float distanceY = Shape.Position.Y - closestY;
+        float distanceSquared = distanceX * distanceX + distanceY * distanceY;
+
+        if (distanceSquared < Shape.Radius * Shape.Radius)
+        {
+            if (closestX == Shape.Position.X)
+            {
+                return CollisionType.Vertical;
+            }
+            else if (closestY == Shape.Position.Y)
+            {
+                return CollisionType.Horizontal;
+            }
+        }
+
+        return CollisionType.None;
     }
 
     public void CalculatePointCollision(Vector2u vector2)

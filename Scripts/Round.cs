@@ -75,14 +75,17 @@ public class Round
 
     private void Logic()
     {
-        BallMovementProcessing();
-    }
-
-    private void BallMovementProcessing()
-    {
         ball.Move();
 
+        CollisionsDetecting();
+    }
+
+    private void CollisionsDetecting()
+    {
         ball.DetectingBordersCollision(window.Size);
+
+        ball.CollisionProcessing(player1.RacketShape);
+        ball.CollisionProcessing(player2.RacketShape);
     }
 
     private void DrawObjects()
@@ -92,12 +95,11 @@ public class Round
         RectangleShape racket1 = player1.RacketShape;
         window.Draw(racket1);
 
-
         RectangleShape racket2 = player2.RacketShape;
         window.Draw(racket2);
     }
 
-    private void OnKeyPressed(object sender, SFML.Window.KeyEventArgs e)
+    private void OnKeyPressed(object sender, KeyEventArgs e)
     {
         if (e.Code == Keyboard.Key.Space)
         {
@@ -112,8 +114,6 @@ public class Round
 
     private void WindowClosed(object sender, EventArgs e)
     {
-        Console.WriteLine("Window is closing...");
-
         RenderWindow w = (RenderWindow)sender;
         w.Close();
     }
