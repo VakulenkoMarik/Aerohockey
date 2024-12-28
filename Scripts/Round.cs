@@ -10,28 +10,47 @@ public class Round
     private Ball ball;
     private Player player1;
     private Player player2;
+    private Text score = new();
+
+    public Player? Winer { get; private set; }
     
     private float distanceFromTheGoal = 100;
     private bool isEndRound = false;
 
-    public void Start(GamePLayer player1, GamePLayer player2, RenderWindow window)
+    public void Start(GamePLayer player1, GamePLayer player2, string scoreText, RenderWindow window)
     {
-        Init(player1, player2, window);
+        Init(player1, player2, scoreText, window);
 
         RoundCycle();
     }
 
-    private void Init(GamePLayer p1, GamePLayer p2, RenderWindow window)
+    private void Init(GamePLayer p1, GamePLayer p2, string text, RenderWindow window)
     {
         this.window = window;
-        ball = new Ball(50f, Color.Blue);
-
         window.KeyPressed += OnKeyPressed;
         window.Closed += WindowClosed;
+
+        ScoreCustomisation(text);
+
+        ball = new Ball(50f, Color.Blue);
 
         SetPlayers(p1, p2);
 
         BallToTheStart();
+    }
+
+    private void ScoreCustomisation(string text)
+    {
+        score.Font = Configurations.openSans;
+        score.DisplayedString = text;
+
+        score.Scale = new Vector2f(2f, 2f);
+        score.Origin = new Vector2f(score.GetLocalBounds().Width / 2f, score.GetLocalBounds().Height / 2f);
+        score.Position = new Vector2f(window.Size.X / 2f, 40f);
+
+        score.FillColor = Color.White;
+        score.OutlineColor = Color.Black;
+        score.OutlineThickness = 1f;
     }
 
     private void SetPlayers(GamePLayer gamePlayer1, GamePLayer gamePlayer2)
@@ -78,6 +97,8 @@ public class Round
         ball.Move();
 
         CollisionsDetecting();
+
+        CheckGoal();
     }
 
     private void CollisionsDetecting()
@@ -86,6 +107,20 @@ public class Round
 
         ball.CollisionProcessing(player1.RacketShape);
         ball.CollisionProcessing(player2.RacketShape);
+    }
+
+    private void CheckGoal()
+    {
+        if (ball.Shape.Position.X <= 0)
+        {
+            Winer = player2;
+            isEndRound = true;
+        }
+        else if (ball.Shape.Position.X >= window.Size.X)
+        {
+            Winer = player1;
+            isEndRound = true;
+        }
     }
 
     private void DrawObjects()
@@ -97,6 +132,8 @@ public class Round
 
         RectangleShape racket2 = player2.RacketShape;
         window.Draw(racket2);
+
+        window.Draw(score);
     }
 
     private void OnKeyPressed(object sender, KeyEventArgs e)

@@ -78,11 +78,6 @@ public class Ball
         return (float)(random.Next(5, 11)) / 10f;
     }
 
-    public void DetectingBordersCollision(Vector2u vector2)
-    {
-        CalculatePointCollision(vector2);
-    }
-
     public void CollisionProcessing(RectangleShape target)
     {
         switch (CheckCollision(target))
@@ -127,21 +122,19 @@ public class Ball
         return CollisionType.None;
     }
 
+    public void DetectingBordersCollision(Vector2u vector2)
+    {
+        CalculatePointCollision(vector2);
+    }
+
     public void CalculatePointCollision(Vector2u vector2)
     {
         float top = Shape.Position.Y - Shape.Radius;
         float bottom = Shape.Position.Y + Shape.Radius;
-        float left = Shape.Position.X - Shape.Radius;
-        float right = Shape.Position.X + Shape.Radius;
 
         if (bottom > vector2.Y || top < 0)
         {
             ReverseDirectionY();
-        }
-
-        if (right > vector2.X || left < 0)
-        {
-            ReverseDirectionX();
         }
     }
 }
