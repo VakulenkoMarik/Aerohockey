@@ -10,7 +10,9 @@ public static class Configurations
 
     private static string PathValidation(string filePath)
     {
-        return Path.Combine(Directory.GetCurrentDirectory(), filePath);
+        string projectRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", ".."));
+            
+        return Path.Combine(projectRoot, filePath);
     }
     
     public static Text mainText = new Text()
