@@ -3,9 +3,16 @@ using SFML.System;
 
 public static class Configurations
 {
-    public static Font openSans = new Font("Fonts\\OpenSans-VariableFont_wdth,wght.ttf");
-    public const string BackgroundPath = "Textures\\Football.jpg";
+    public static string BackgroundPath = PathValidation("Textures\\Football.jpg");
 
+    private static readonly string openSansPath = "Fonts\\OpenSans.ttf";
+    public static Font openSans = new Font(PathValidation(openSansPath));
+
+    private static string PathValidation(string filePath)
+    {
+        return Path.Combine(Directory.GetCurrentDirectory(), filePath);
+    }
+    
     public static Text mainText = new Text()
     {
         Font = openSans,

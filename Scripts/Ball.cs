@@ -1,4 +1,3 @@
-using System.Numerics;
 using SFML.Graphics;
 using SFML.System;
 
