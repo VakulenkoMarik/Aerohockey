@@ -43,7 +43,7 @@ public class Round
 
     private void BackgroundCustomisation()
     {
-        background.Texture = new Texture(Configurations.BackgroundPath);
+        background.Texture = new Texture(PathUtils.Get(Configurations.BackgroundPath));
 
         background.Scale = new Vector2f(
             (float)window.Size.X / background.Texture.Size.X,

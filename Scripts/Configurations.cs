@@ -3,17 +3,10 @@ using SFML.System;
 
 public static class Configurations
 {
-    public static string BackgroundPath = PathValidation("Textures\\Football.jpg");
-
+    public static readonly string BackgroundPath = "Textures\\Football.jpg";
     private static readonly string openSansPath = "Fonts\\OpenSans.ttf";
-    public static Font openSans = new Font(PathValidation(openSansPath));
 
-    private static string PathValidation(string filePath)
-    {
-        string projectRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", ".."));
-            
-        return Path.Combine(projectRoot, filePath);
-    }
+    public readonly static Font openSans = new Font(PathUtils.Get(openSansPath));
     
     public static Text mainText = new Text()
     {

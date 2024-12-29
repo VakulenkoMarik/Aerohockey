@@ -6,7 +6,7 @@ public class Game
 {
     private RenderWindow window = new RenderWindow(new VideoMode(1600, 1000), "Game window");
 
-    private StringBuilder scoreText = new StringBuilder("0 / 0");
+    private StringBuilder scoreText = new StringBuilder("0 : 0");
 
     private GamePLayer gamePlayer1;
     private GamePLayer gamePlayer2;
@@ -66,6 +66,6 @@ public class Game
 
         scoreText.Clear();
 
-        scoreText.Append($"{gamePlayer1.roundsWin} / {gamePlayer2.roundsWin}");
+        scoreText.Append($"{gamePlayer1.roundsWin} : {gamePlayer2.roundsWin}");
     }
 }
