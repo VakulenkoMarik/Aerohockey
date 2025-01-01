@@ -4,6 +4,9 @@ using SFML.Window;
 
 public class Round
 {
+    private uint playAreaX = Configurations.WindowWidth;
+    private uint playAreaY = Configurations.WindowHeight;
+
     private RenderWindow window;
     private Color backgoundColor = Color.Green;
 
@@ -11,7 +14,6 @@ public class Round
     private Player player1;
     private Player player2;
     private Text score = new();
-
     private Sprite background = new();
 
     public Player? Winer { get; private set; }
@@ -19,19 +21,28 @@ public class Round
     private float distanceFromTheGoal = 100;
     private bool isEndRound = false;
 
-    public void Start(GamePLayer player1, GamePLayer player2, string scoreText, RenderWindow window)
+    public void Start(GamePlayer player1, GamePlayer player2, string scoreText, RenderWindow window)
     {
         Init(player1, player2, scoreText, window);
 
         RoundCycle();
     }
 
-    private void Init(GamePLayer p1, GamePLayer p2, string text, RenderWindow window)
+    private void Init(GamePlayer p1, GamePlayer p2, string text, RenderWindow window)
+    {
+        InfrastructureInit(window);
+
+        GameplayInit(p1, p2, text);
+    }
+
+    private void InfrastructureInit(RenderWindow window)
     {
         this.window = window;
         window.KeyPressed += OnKeyPressed;
-        window.Closed += WindowClosed;
+    }
 
+    private void GameplayInit(GamePlayer p1, GamePlayer p2, string text)
+    {
         BackgroundCustomisation();
         ScoreCustomisation(text);
 
@@ -46,8 +57,8 @@ public class Round
         background.Texture = new Texture(PathUtils.Get(Configurations.BackgroundPath));
 
         background.Scale = new Vector2f(
-            (float)window.Size.X / background.Texture.Size.X,
-            (float)window.Size.Y / background.Texture.Size.Y
+            (float)playAreaX / background.Texture.Size.X,
+            (float)playAreaY / background.Texture.Size.Y
         );
 
         background.Origin = new Vector2f(
@@ -56,28 +67,28 @@ public class Round
         );
 
         background.Position = new Vector2f(
-            window.Size.X / 2f,
-            window.Size.Y / 2f
+            playAreaX / 2f,
+            playAreaY / 2f
         );
     }
 
     private void ScoreCustomisation(string text)
     {
-        score = Configurations.mainText;
+        score = Configurations.MainText;
         score.DisplayedString = text;
 
         score.Origin = new Vector2f(score.GetLocalBounds().Width / 2f, score.GetLocalBounds().Height / 2f);
-        score.Position = new Vector2f(window.Size.X / 2f, 40f);
+        score.Position = new Vector2f(playAreaX / 2f, 40f);
     }
 
-    private void SetPlayers(GamePLayer gamePlayer1, GamePLayer gamePlayer2)
+    private void SetPlayers(GamePlayer gamePlayer1, GamePlayer gamePlayer2)
     {
         player1 = gamePlayer1.player;
         player2 = gamePlayer2.player;
 
-        float YPLayersStartPosition = window.Size.Y / 2;
+        float YPLayersStartPosition = playAreaY / 2;
         float p1StartX = distanceFromTheGoal;
-        float p2StartX = window.Size.X - distanceFromTheGoal;
+        float p2StartX = playAreaX - distanceFromTheGoal;
 
         player1.SetRacketsCoordinates(p1StartX, YPLayersStartPosition);
         player2.SetRacketsCoordinates(p2StartX, YPLayersStartPosition);
@@ -85,8 +96,8 @@ public class Round
 
     private void BallToTheStart()
     {
-        float middleOfScreenByX = window.Size.X / 2;
-        float middleOfScreenByY = window.Size.Y / 2;
+        float middleOfScreenByX = playAreaX / 2;
+        float middleOfScreenByY = playAreaY / 2;
 
         Vector2f position = new Vector2f(middleOfScreenByX, middleOfScreenByY);
 
@@ -112,6 +123,8 @@ public class Round
     private void Logic()
     {
         ball.Move();
+        player1.TryMoveRacket();
+        player2.TryMoveRacket();
 
         CollisionsDetecting();
 
@@ -133,7 +146,7 @@ public class Round
             Winer = player2;
             isEndRound = true;
         }
-        else if (ball.Shape.Position.X >= window.Size.X)
+        else if (ball.Shape.Position.X >= playAreaX)
         {
             Winer = player1;
             isEndRound = true;
@@ -158,13 +171,11 @@ public class Round
     {
         if (e.Code == Keyboard.Key.Space)
         {
-            ball.StartMovement();
+            ball.IsCanMove = true;
         }
 
-        float windowHeight = window.Size.Y;
-
-        player1.HandleInput(e.Code, windowHeight);
-        player2.HandleInput(e.Code, windowHeight);
+        player1.HandleInput(e.Code);
+        player2.HandleInput(e.Code);
     }
 
     private void WindowClosed(object sender, EventArgs e)

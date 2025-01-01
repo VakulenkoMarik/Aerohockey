@@ -12,12 +12,21 @@ public class Player
             FillColor = fillColor,
             Origin = new Vector2f(x / 2, y / 2),
         };
+
+        defaultValues = new()
+        {
+            MoveSpeed = 50
+        };
     }
 
-    public Keyboard.Key keyToDown {get; private set;}
-    public Keyboard.Key keyToUp {get; private set;}
+    private PlayerDefaultValues defaultValues;
+    
+    public Keyboard.Key KeyToDown {get; private set;}
+    public Keyboard.Key KeyToUp {get; private set;}
 
     public RectangleShape RacketShape { get; private set; }
+
+    private float directionMultiplayer = 0;
 
     public void SetRacketsCoordinates(float x, float y)
     {
@@ -26,31 +35,39 @@ public class Player
 
     public void SetInputKeys(Keyboard.Key keyToDown, Keyboard.Key keyToUp)
     {
-        this.keyToDown = keyToDown;
-        this.keyToUp = keyToUp;
+        KeyToDown = keyToDown;
+        KeyToUp = keyToUp;
     }
 
-    public void HandleInput(Keyboard.Key key, float heightOfScreen)
+    public void HandleInput(Keyboard.Key key)
     {
-        if (key == keyToUp)
+        if (key == KeyToUp)
         {
-            TryMoveRacket(-50, heightOfScreen);
+            directionMultiplayer = -1;
         }
-        else if (key == keyToDown)
+        else if (key == KeyToDown)
         {
-            TryMoveRacket(50, heightOfScreen);
+            directionMultiplayer = 1;
         }
     }
 
-    public void TryMoveRacket(float distance, float maxHeight)
+    public void TryMoveRacket()
     {
-        float NewYPosition = RacketShape.Position.Y + distance;
+        float deltaY = defaultValues.MoveSpeed * directionMultiplayer; 
+        float newYPosition = RacketShape.Position.Y + deltaY;
 
-        if (NewYPosition < 0 || NewYPosition > maxHeight)
+        if (newYPosition < 0 || newYPosition > Configurations.WindowHeight)
         {
             return;
         }
 
-        RacketShape.Position = new Vector2f(RacketShape.Position.X, NewYPosition);
+        RacketShape.Position = new Vector2f(RacketShape.Position.X, newYPosition);
+
+        directionMultiplayer = 0;
     }
+}
+
+public struct PlayerDefaultValues
+{
+    public float MoveSpeed { get; init; }
 }

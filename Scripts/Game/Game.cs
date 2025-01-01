@@ -4,18 +4,19 @@ using SFML.Window;
 
 public class Game
 {
-    private RenderWindow window = new RenderWindow(new VideoMode(1600, 1000), "Game window");
+    private RenderWindow window = new RenderWindow(new VideoMode(
+        Configurations.WindowWidth, Configurations.WindowHeight), "Game window");
 
     private StringBuilder scoreText = new StringBuilder("0 : 0");
 
-    private GamePLayer gamePlayer1;
-    private GamePLayer gamePlayer2;
+    private GamePlayer gamePlayer1;
+    private GamePlayer gamePlayer2;
 
     public void Start()
     {
         Init();
 
-        GameCycle();
+        StartGame();
     }
 
     private void Init()
@@ -27,11 +28,11 @@ public class Game
 
     private void SetPlayers()
     {
-        gamePlayer1 = new GamePLayer(Keyboard.Key.S, Keyboard.Key.W);
-        gamePlayer2 = new GamePLayer(Keyboard.Key.Down, Keyboard.Key.Up);
+        gamePlayer1 = new GamePlayer(Keyboard.Key.S, Keyboard.Key.W);
+        gamePlayer2 = new GamePlayer(Keyboard.Key.Down, Keyboard.Key.Up);
     }
 
-    private void GameCycle()
+    private void StartGame()
     {
         while (window.IsOpen)
         {

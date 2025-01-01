@@ -18,6 +18,8 @@ public class Ball
             FillColor = fillColor,
             Origin = new Vector2f(radius, radius),
         };
+
+        Direction = new Vector2f(XSpeed, YSpeed);
     }
 
     private Random random = new Random();
@@ -25,20 +27,13 @@ public class Ball
 
     public Vector2f Direction { get; private set; }
 
-    private bool isCanMove;
+    public bool IsCanMove { get; set; }
     private float XSpeed = 0.3f;
     private float YSpeed = 0.5f;
 
-    public void StartMovement()
-    {
-        isCanMove = true;
-
-        Direction = new Vector2f(XSpeed, YSpeed);
-    }
-
     public void Move()
     {
-        if (!isCanMove)
+        if (!IsCanMove)
         {
             return;
         }
@@ -52,7 +47,7 @@ public class Ball
     public void DropIntoPosition(Vector2f pos)
     {
         Shape.Position = pos;
-        isCanMove = false;
+        IsCanMove = false;
     }
 
     private void ReverseDirectionY()
@@ -82,12 +77,11 @@ public class Ball
         switch (CheckCollision(target))
         {
             case CollisionType.Horizontal:
-                ReverseDirectionX();
+                ReverseDirectionY();
                 break;
 
             case CollisionType.Vertical:
                 ReverseDirectionX();
-                ReverseDirectionY();
                 break;
 
             default:
@@ -108,11 +102,11 @@ public class Ball
 
         if (distanceSquared < Shape.Radius * Shape.Radius)
         {
-            if (closestX == Shape.Position.X)
+            if (CustomMath.Approximately(closestX, Shape.Position.X))
             {
                 return CollisionType.Vertical;
             }
-            else if (closestY == Shape.Position.Y)
+            else if (CustomMath.Approximately(closestX, Shape.Position.Y))
             {
                 return CollisionType.Horizontal;
             }
