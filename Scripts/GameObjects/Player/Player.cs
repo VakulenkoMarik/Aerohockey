@@ -15,7 +15,7 @@ public class Player
 
         defaultValues = new()
         {
-            MoveSpeed = 50
+            MoveSpeed = 2000
         };
     }
 
@@ -53,7 +53,7 @@ public class Player
 
     public void TryMoveRacket()
     {
-        float deltaY = defaultValues.MoveSpeed * directionMultiplayer; 
+        float deltaY = defaultValues.MoveSpeed * directionMultiplayer * Time.deltaTime; 
         float newYPosition = RacketShape.Position.Y + deltaY;
 
         if (newYPosition < 0 || newYPosition > Configurations.WindowHeight)

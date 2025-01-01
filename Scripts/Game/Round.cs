@@ -4,6 +4,8 @@ using SFML.Window;
 
 public class Round
 {
+    private Clock clock = new Clock();
+
     private uint playAreaX = Configurations.WindowWidth;
     private uint playAreaY = Configurations.WindowHeight;
 
@@ -117,6 +119,8 @@ public class Round
             DrawObjects();
             
             window.Display();
+
+            Wait();
         }
     }
 
@@ -187,5 +191,14 @@ public class Round
     private bool IsEndRound()
     {
         return isEndRound;
+    }
+
+    private void Wait()
+    {
+        clock.Restart();
+
+        while (clock.ElapsedTime.AsSeconds() < Time.UntilUpdateTime) {}
+        
+        Time.Update(clock.ElapsedTime.AsSeconds());
     }
 }

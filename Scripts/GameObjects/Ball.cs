@@ -28,8 +28,8 @@ public class Ball
     public Vector2f Direction { get; private set; }
 
     public bool IsCanMove { get; set; }
-    private float XSpeed = 0.3f;
-    private float YSpeed = 0.5f;
+    private float XSpeed = 8f;
+    private float YSpeed = 10f;
 
     public void Move()
     {
@@ -69,7 +69,7 @@ public class Ball
 
     private float GenerateCoefficient()
     {
-        return (float)(random.Next(5, 11)) / 10f;
+        return (float)(random.Next(50, 110)) / 10f;
     }
 
     public void CollisionProcessing(RectangleShape target)
@@ -78,13 +78,11 @@ public class Ball
         {
             case CollisionType.Horizontal:
                 ReverseDirectionY();
+                ReverseDirectionX();
                 break;
 
             case CollisionType.Vertical:
                 ReverseDirectionX();
-                break;
-
-            default:
                 break;
         }
     }
@@ -104,11 +102,11 @@ public class Ball
         {
             if (CustomMath.Approximately(closestX, Shape.Position.X))
             {
-                return CollisionType.Vertical;
-            }
-            else if (CustomMath.Approximately(closestX, Shape.Position.Y))
-            {
                 return CollisionType.Horizontal;
+            }
+            else if (CustomMath.Approximately(closestY, Shape.Position.Y))
+            {
+                return CollisionType.Vertical;
             }
         }
 
