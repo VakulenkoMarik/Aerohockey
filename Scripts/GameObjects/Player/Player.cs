@@ -21,7 +21,7 @@ public class Player
 
         defaultValues = new()
         {
-            MoveSpeed = 2000
+            MoveSpeed = 1000
         };
     }
 
@@ -47,13 +47,13 @@ public class Player
         KeyToUp = keyToUp;
     }
 
-    public void HandleInput(Keyboard.Key key)
+    public void HandleInput()
     {
-        if (key == KeyToUp)
+        if (Keyboard.IsKeyPressed(KeyToUp))
         {
             directionMultiplayer = -1;
         }
-        else if (key == KeyToDown)
+        else if (Keyboard.IsKeyPressed(KeyToDown))
         {
             directionMultiplayer = 1;
         }

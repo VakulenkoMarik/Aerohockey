@@ -110,7 +110,7 @@ public class Round
     {
         while (!IsEndRound() && window.IsOpen)
         {
-            window.DispatchEvents();
+            InputProcessing();
 
             window.Clear(backgoundColor);
 
@@ -122,6 +122,14 @@ public class Round
 
             Wait();
         }
+    }
+
+    private void InputProcessing()
+    {
+        window.DispatchEvents();
+
+        player1.HandleInput();
+        player2.HandleInput();
     }
 
     private void Logic()
@@ -177,9 +185,6 @@ public class Round
         {
             ball.IsCanMove = true;
         }
-
-        player1.HandleInput(e.Code);
-        player2.HandleInput(e.Code);
     }
 
     private void WindowClosed(object sender, EventArgs e)

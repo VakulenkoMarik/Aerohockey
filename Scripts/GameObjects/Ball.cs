@@ -31,7 +31,7 @@ public class Ball
     public Vector2f Direction { get; private set; }
 
     public bool IsCanMove { get; set; }
-    private float speed = 8f;
+    private float speed = 900f;
 
     public void Move()
     {
@@ -40,8 +40,8 @@ public class Ball
             return;
         }
 
-        float deltaX = Shape.Position.X + Direction.X;
-        float deltaY = Shape.Position.Y + Direction.Y;
+        float deltaX = Shape.Position.X + Direction.X * Time.deltaTime;
+        float deltaY = Shape.Position.Y + Direction.Y * Time.deltaTime;
 
         Shape.Position = new Vector2f(deltaX, deltaY);
     }
