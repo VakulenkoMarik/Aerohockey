@@ -85,8 +85,8 @@ public class Round
 
     private void SetPlayers(GamePlayer gamePlayer1, GamePlayer gamePlayer2)
     {
-        player1 = gamePlayer1.player;
-        player2 = gamePlayer2.player;
+        player1 = gamePlayer1.Player;
+        player2 = gamePlayer2.Player;
 
         float YPLayersStartPosition = playAreaY / 2;
         float p1StartX = distanceFromTheGoal;
@@ -137,10 +137,10 @@ public class Round
 
     private void CollisionsDetecting()
     {
-        ball.DetectingBordersCollision(window.Size);
+        ball.BordersCollisionProcessing(window.Size);
 
-        ball.CollisionProcessing(player1.RacketShape);
-        ball.CollisionProcessing(player2.RacketShape);
+        ball.CollisionProcessing(player1);
+        ball.CollisionProcessing(player2);
     }
 
     private void CheckGoal()

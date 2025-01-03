@@ -4,13 +4,19 @@ using SFML.Window;
 
 public class Player
 {
-    public Player(float x, float y, Color fillColor)
+    public Player(bool isFirstPlayer)
     {
+        IsFirstPlayer = isFirstPlayer;
+
+        float racketWidth = 50;
+        float racketHeight = 300;
+        Color racketColor = Color.Red;
+
         RacketShape = new RectangleShape()
         {
-            Size = new Vector2f(x, y),
-            FillColor = fillColor,
-            Origin = new Vector2f(x / 2, y / 2),
+            Size = new Vector2f(racketWidth, racketHeight),
+            Origin = new Vector2f(racketWidth / 2, racketHeight / 2),
+            FillColor = racketColor,
         };
 
         defaultValues = new()
@@ -19,12 +25,14 @@ public class Player
         };
     }
 
+    public bool IsFirstPlayer { get; init; }
+
+    public RectangleShape RacketShape { get; private set; }
+
     private PlayerDefaultValues defaultValues;
     
     public Keyboard.Key KeyToDown {get; private set;}
     public Keyboard.Key KeyToUp {get; private set;}
-
-    public RectangleShape RacketShape { get; private set; }
 
     private float directionMultiplayer = 0;
 
@@ -61,9 +69,14 @@ public class Player
             return;
         }
 
-        RacketShape.Position = new Vector2f(RacketShape.Position.X, newYPosition);
+        MoveRacket(newYPosition);
 
         directionMultiplayer = 0;
+    }
+
+    public void MoveRacket(float newYPosition)
+    {
+        RacketShape.Position = new Vector2f(RacketShape.Position.X, newYPosition);
     }
 }
 

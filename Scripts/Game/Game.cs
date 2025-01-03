@@ -28,7 +28,7 @@ public class Game
 
     private void SetPlayers()
     {
-        gamePlayer1 = new GamePlayer(Keyboard.Key.S, Keyboard.Key.W);
+        gamePlayer1 = new GamePlayer(Keyboard.Key.S, Keyboard.Key.W, true);
         gamePlayer2 = new GamePlayer(Keyboard.Key.Down, Keyboard.Key.Up);
     }
 
@@ -56,17 +56,17 @@ public class Game
             return;
         }
 
-        if (winer == gamePlayer1.player)
+        if (winer == gamePlayer1.Player)
         {
-            gamePlayer1.roundsWin++;
+            gamePlayer1.RoundsWin++;
         }
-        else if (winer == gamePlayer2.player)
+        else if (winer == gamePlayer2.Player)
         {
-            gamePlayer2.roundsWin++;
+            gamePlayer2.RoundsWin++;
         }
 
         scoreText.Clear();
 
-        scoreText.Append($"{gamePlayer1.roundsWin} : {gamePlayer2.roundsWin}");
+        scoreText.Append($"{gamePlayer1.RoundsWin} : {gamePlayer2.RoundsWin}");
     }
 }

@@ -77,7 +77,7 @@ public class Ball
         return (float)(random.Next(minValue, maxValue)) / 10f;
     }
 
-    public void CollisionProcessing(RectangleShape target)
+    public void CollisionProcessing(Player target)
     {
         switch (CheckCollision(target))
         {
@@ -92,16 +92,17 @@ public class Ball
         }
     }
 
-    private CollisionType CheckCollision(RectangleShape rectangle)
+    private CollisionType CheckCollision(Player target)
     {
-        FloatRect rectangleRect = rectangle.GetGlobalBounds();
+        if (!PossibleCollision(target))
+        {
+            return CollisionType.None;
+        }
 
-        float closestX = Math.Clamp(Shape.Position.X, rectangleRect.Left, rectangleRect.Left + rectangleRect.Width);
-        float closestY = Math.Clamp(Shape.Position.Y, rectangleRect.Top, rectangleRect.Top + rectangleRect.Height);
+        RectangleShape targetShape = target.RacketShape;
+        FloatRect rectangleRect = targetShape.GetGlobalBounds();
 
-        float distanceX = Shape.Position.X - closestX;
-        float distanceY = Shape.Position.Y - closestY;
-        float distanceSquared = distanceX * distanceX + distanceY * distanceY;
+        var (distanceSquared, closestX, closestY) = CustomMath.ClosestPointAndDistance(rectangleRect, Shape);
 
         if (distanceSquared < Shape.Radius * Shape.Radius)
         {
@@ -118,12 +119,21 @@ public class Ball
         return CollisionType.None;
     }
 
-    public void DetectingBordersCollision(Vector2u vector2)
+    private bool PossibleCollision(Player target)
     {
-        CalculatePointCollision(vector2);
+        if (target.IsFirstPlayer && Direction.X > 0)
+        {
+            return false;
+        }
+        else if (!target.IsFirstPlayer && Direction.X < 0)
+        {
+            return false;
+        }
+
+        return true;
     }
 
-    public void CalculatePointCollision(Vector2u vector2)
+    public void BordersCollisionProcessing(Vector2u vector2)
     {
         float top = Shape.Position.Y - Shape.Radius;
         float bottom = Shape.Position.Y + Shape.Radius;
