@@ -12,6 +12,9 @@ public class Ball
 {
     public Ball(float radius, Color fillColor)
     {
+        float xSpeed = speed;
+        float ySpeed = xSpeed - xSpeed / 10;
+
         Shape = new CircleShape()
         {
             Radius = radius,
@@ -19,7 +22,7 @@ public class Ball
             Origin = new Vector2f(radius, radius),
         };
 
-        Direction = new Vector2f(XSpeed, YSpeed);
+        Direction = new Vector2f(xSpeed, ySpeed);
     }
 
     private Random random = new Random();
@@ -28,8 +31,7 @@ public class Ball
     public Vector2f Direction { get; private set; }
 
     public bool IsCanMove { get; set; }
-    private float XSpeed = 8f;
-    private float YSpeed = 10f;
+    private float speed = 8f;
 
     public void Move()
     {
@@ -69,7 +71,10 @@ public class Ball
 
     private float GenerateCoefficient()
     {
-        return (float)(random.Next(50, 110)) / 10f;
+        int minValue = (int)(speed * 5);
+        int maxValue = (int)(speed * 15);
+
+        return (float)(random.Next(minValue, maxValue)) / 10f;
     }
 
     public void CollisionProcessing(RectangleShape target)
