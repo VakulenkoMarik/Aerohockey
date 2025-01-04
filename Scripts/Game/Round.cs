@@ -48,7 +48,7 @@ public class Round
         BackgroundCustomisation();
         ScoreCustomisation(text);
 
-        ball = new Ball(50f, Color.Blue);
+        ball = new Ball(50f);
         BallToTheStart();
 
         SetPlayers(p1, p2);
@@ -153,12 +153,12 @@ public class Round
 
     private void CheckGoal()
     {
-        if (ball.Shape.Position.X <= 0)
+        if (ball.Sprite.Position.X <= 0)
         {
             Winer = player2;
             isEndRound = true;
         }
-        else if (ball.Shape.Position.X >= playAreaX)
+        else if (ball.Sprite.Position.X >= playAreaX)
         {
             Winer = player1;
             isEndRound = true;
@@ -168,7 +168,6 @@ public class Round
     private void DrawObjects()
     {
         window.Draw(background);
-        window.Draw(ball.Shape);
 
         RectangleShape racket1 = player1.RacketShape;
         window.Draw(racket1);
@@ -177,6 +176,7 @@ public class Round
         window.Draw(racket2);
 
         window.Draw(score);
+        window.Draw(ball.Sprite);
     }
 
     private void OnKeyPressed(object sender, KeyEventArgs e)

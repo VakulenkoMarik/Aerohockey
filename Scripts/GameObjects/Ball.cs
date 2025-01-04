@@ -1,3 +1,4 @@
+using System.Numerics;
 using SFML.Graphics;
 using SFML.System;
 
@@ -10,27 +11,32 @@ public enum CollisionType
 
 public class Ball
 {
-    public Ball(float radius, Color fillColor)
+    public Ball(float radius)
     {
+        Radius = radius;
+
         float xSpeed = speed;
         float ySpeed = xSpeed - xSpeed / 10;
 
-        Shape = new CircleShape()
-        {
-            Radius = radius,
-            FillColor = fillColor,
-            Origin = new Vector2f(radius, radius),
-        };
-
         Direction = new Vector2f(xSpeed, ySpeed);
+
+        Texture ballTexture = new Texture(PathUtils.Get(Configurations.BallPath));
+
+        Sprite = new Sprite()
+        {
+            Texture = new Texture(ballTexture),
+            Origin = new Vector2f(ballTexture.Size.X / 2, ballTexture.Size.Y / 2),
+            Scale = new Vector2f(radius / (ballTexture.Size.X / 2), radius / (ballTexture.Size.Y / 2))
+        };
     }
 
     private Random random = new Random();
-    public CircleShape Shape { get; private set; }
+    public Sprite Sprite { get; private set; }
 
     public Vector2f Direction { get; private set; }
 
     public bool IsCanMove { get; set; }
+    public float Radius { get; private set; }
     private float speed = 900f;
 
     public void Move()
@@ -40,15 +46,16 @@ public class Ball
             return;
         }
 
-        float deltaX = Shape.Position.X + Direction.X * Time.deltaTime;
-        float deltaY = Shape.Position.Y + Direction.Y * Time.deltaTime;
+        float deltaX = Sprite.Position.X + Direction.X * Time.deltaTime;
+        float deltaY = Sprite.Position.Y + Direction.Y * Time.deltaTime;
 
-        Shape.Position = new Vector2f(deltaX, deltaY);
+        Sprite.Position = new Vector2f(deltaX, deltaY);
+        Sprite.Rotation += Direction.X / 100;
     }
     
     public void DropIntoPosition(Vector2f pos)
     {
-        Shape.Position = pos;
+        Sprite.Position = pos;
         IsCanMove = false;
     }
 
@@ -102,15 +109,15 @@ public class Ball
         RectangleShape targetShape = target.RacketShape;
         FloatRect rectangleRect = targetShape.GetGlobalBounds();
 
-        var (distanceSquared, closestX, closestY) = CustomMath.ClosestPointAndDistance(rectangleRect, Shape);
+        var (distanceSquared, closestX, closestY) = CustomMath.ClosestPointAndDistance(rectangleRect, Sprite.Position);
 
-        if (distanceSquared < Shape.Radius * Shape.Radius)
+        if (distanceSquared < Radius * Radius)
         {
-            if (CustomMath.Approximately(closestX, Shape.Position.X))
+            if (CustomMath.Approximately(closestX, Sprite.Position.X))
             {
                 return CollisionType.Horizontal;
             }
-            else if (CustomMath.Approximately(closestY, Shape.Position.Y))
+            else if (CustomMath.Approximately(closestY, Sprite.Position.Y))
             {
                 return CollisionType.Vertical;
             }
@@ -135,8 +142,8 @@ public class Ball
 
     public void BordersCollisionProcessing(Vector2u vector2)
     {
-        float top = Shape.Position.Y - Shape.Radius;
-        float bottom = Shape.Position.Y + Shape.Radius;
+        float top = Sprite.Position.Y - Radius;
+        float bottom = Sprite.Position.Y + Radius;
 
         if (bottom > vector2.Y || top < 0)
         {
