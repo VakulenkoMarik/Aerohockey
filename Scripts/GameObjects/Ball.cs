@@ -1,4 +1,3 @@
-using System.Numerics;
 using SFML.Graphics;
 using SFML.System;
 
@@ -106,7 +105,7 @@ public class Ball
             return CollisionType.None;
         }
 
-        RectangleShape targetShape = target.RacketShape;
+        Sprite targetShape = target.RacketSprite;
         FloatRect rectangleRect = targetShape.GetGlobalBounds();
 
         var (distanceSquared, closestX, closestY) = CustomMath.ClosestPointAndDistance(rectangleRect, Sprite.Position);

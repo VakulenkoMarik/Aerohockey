@@ -4,6 +4,7 @@ using SFML.System;
 public static class Configurations
 {
     public static readonly string BackgroundPath = "Textures\\Football.jpg";
+    public static readonly string RacketPath = "Textures\\Racket.jpg";
     public static readonly string BallPath = "Textures\\Ball.png";
     private static readonly string OpenSansPath = "Fonts\\OpenSans.ttf";
 

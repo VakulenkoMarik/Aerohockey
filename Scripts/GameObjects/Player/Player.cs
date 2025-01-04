@@ -8,15 +8,16 @@ public class Player
     {
         IsFirstPlayer = isFirstPlayer;
 
-        float racketWidth = 50;
-        float racketHeight = 300;
-        Color racketColor = Color.Red;
+        float racketWidth = 0.2f;
+        float racketHeight = 0.7f;
 
-        RacketShape = new RectangleShape()
+        Texture racketTexture = new Texture(PathUtils.Get(Configurations.RacketPath));
+
+        RacketSprite = new Sprite()
         {
-            Size = new Vector2f(racketWidth, racketHeight),
-            Origin = new Vector2f(racketWidth / 2, racketHeight / 2),
-            FillColor = racketColor,
+            Texture = racketTexture,
+            Scale = new Vector2f(racketWidth, racketHeight),
+            Origin = new Vector2f(racketTexture.Size.X / 2f, racketTexture.Size.Y / 2f),
         };
 
         defaultValues = new()
@@ -27,7 +28,7 @@ public class Player
 
     public bool IsFirstPlayer { get; init; }
 
-    public RectangleShape RacketShape { get; private set; }
+    public Sprite RacketSprite { get; private set; }
 
     private PlayerDefaultValues defaultValues;
     
@@ -38,7 +39,7 @@ public class Player
 
     public void SetRacketsCoordinates(float x, float y)
     {
-        RacketShape.Position = new Vector2f(x, y);
+        RacketSprite.Position = new Vector2f(x, y);
     }
 
     public void SetInputKeys(Keyboard.Key keyToDown, Keyboard.Key keyToUp)
@@ -62,7 +63,7 @@ public class Player
     public void TryMoveRacket()
     {
         float deltaY = defaultValues.MoveSpeed * directionMultiplayer * Time.deltaTime; 
-        float newYPosition = RacketShape.Position.Y + deltaY;
+        float newYPosition = RacketSprite.Position.Y + deltaY;
 
         if (newYPosition < 0 || newYPosition > Configurations.WindowHeight)
         {
@@ -76,7 +77,7 @@ public class Player
 
     public void MoveRacket(float newYPosition)
     {
-        RacketShape.Position = new Vector2f(RacketShape.Position.X, newYPosition);
+        RacketSprite.Position = new Vector2f(RacketSprite.Position.X, newYPosition);
     }
 }
 

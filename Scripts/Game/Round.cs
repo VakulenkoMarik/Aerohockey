@@ -169,10 +169,10 @@ public class Round
     {
         window.Draw(background);
 
-        RectangleShape racket1 = player1.RacketShape;
+        Sprite racket1 = player1.RacketSprite;
         window.Draw(racket1);
 
-        RectangleShape racket2 = player2.RacketShape;
+        Sprite racket2 = player2.RacketSprite;
         window.Draw(racket2);
 
         window.Draw(score);
