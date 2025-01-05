@@ -80,7 +80,7 @@ public class Ball
         int minValue = (int)(speed * 5);
         int maxValue = (int)(speed * 15);
 
-        return (float)(random.Next(minValue, maxValue)) / 10f;
+        return random.Next(minValue, maxValue) / 10f;
     }
 
     public void CollisionProcessing(Player target)

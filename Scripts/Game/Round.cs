@@ -111,14 +111,10 @@ public class Round
         while (!IsEndRound() && window.IsOpen)
         {
             InputProcessing();
-
-            window.Clear(backgoundColor);
-
+            
             Logic();
 
             DrawObjects();
-            
-            window.Display();
 
             Wait();
         }
@@ -167,6 +163,8 @@ public class Round
 
     private void DrawObjects()
     {
+        window.Clear(backgoundColor);
+
         window.Draw(background);
 
         Sprite racket1 = player1.RacketSprite;
@@ -177,6 +175,8 @@ public class Round
 
         window.Draw(score);
         window.Draw(ball.Sprite);
+
+        window.Display();
     }
 
     private void OnKeyPressed(object sender, KeyEventArgs e)
