@@ -13,11 +13,10 @@ public class Round
     private Color backgoundColor = Color.Green;
 
     private Ball ball;
-    private Player player1;
-    private Player player2;
+    private Player player1, player2;
     private Text score = new();
     private Sprite background = new();
-
+    
     public Player? Winer { get; private set; }
     
     private float distanceFromTheGoal = 100;
@@ -49,6 +48,7 @@ public class Round
         ScoreCustomisation(text);
 
         ball = new Ball(50f);
+        
         BallToTheStart();
 
         SetPlayers(p1, p2);
@@ -113,6 +113,8 @@ public class Round
             InputProcessing();
             
             Logic();
+
+            //Audio();
 
             DrawObjects();
 
@@ -185,12 +187,6 @@ public class Round
         {
             ball.IsCanMove = true;
         }
-    }
-
-    private void WindowClosed(object sender, EventArgs e)
-    {
-        RenderWindow w = (RenderWindow)sender;
-        w.Close();
     }
 
     private bool IsEndRound()

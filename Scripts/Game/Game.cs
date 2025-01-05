@@ -1,9 +1,11 @@
 using System.Text;
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.Window;
 
 public class Game
 {
+    private AudioController audioController = new();
     private RenderWindow window = new RenderWindow(new VideoMode(
         Configurations.WindowWidth, Configurations.WindowHeight), "Game window");
 
@@ -23,6 +25,11 @@ public class Game
     {
         SetPlayers();
 
+        InfrastructureInit();
+    }
+
+    private void InfrastructureInit()
+    {
         window.Closed += WindowClosed;
     }
 
@@ -34,6 +41,8 @@ public class Game
 
     private void StartGame()
     {
+        audioController.PlayMusic(true);
+
         while (window.IsOpen)
         {
             Round round = new Round();
@@ -47,6 +56,7 @@ public class Game
     {
         RenderWindow w = (RenderWindow)sender;
         w.Close();
+        audioController.Dispose();
     }
 
     private void AfterRoundProcess(Player? winer)
@@ -65,8 +75,9 @@ public class Game
             gamePlayer2.RoundsWin++;
         }
 
-        scoreText.Clear();
+        AudioController.Instance.celebrationsSFX.Play();
 
+        scoreText.Clear();
         scoreText.Append($"{gamePlayer1.RoundsWin} : {gamePlayer2.RoundsWin}");
     }
 }

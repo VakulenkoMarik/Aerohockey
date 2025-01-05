@@ -90,10 +90,12 @@ public class Ball
             case CollisionType.Horizontal:
                 ReverseDirectionY();
                 ReverseDirectionX();
+                AudioController.Instance.bounceSFX.Play();
                 break;
 
             case CollisionType.Vertical:
                 ReverseDirectionX();
+                AudioController.Instance.bounceSFX.Play();
                 break;
         }
     }
